@@ -60,12 +60,12 @@ void exec_cmd(const char *cmd)
 			argv[argc++] = token;
 			token = strtok(NULL, " ");
 		}
-		argv[argc] = NULL;
-
-		execvp(argv[0], argv);
-
-		shell_print("Cannot execute command.\n");
-		exit(EXIT_FAILURE);
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+			perror("execve failed");
+			exit(EXIT_FAILURE);
+		}
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{
